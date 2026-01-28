@@ -1,0 +1,23 @@
+# Workspace
+.DS_Store
+node_modules/
+.next/
+dist/
+build/
+
+# Logs
+*.log
+portal.log
+builder.log
+community.log
+docs.log
+marketplace.log
+
+# Local Env
+.env*
+!.env.example
+
+# Vercel
+.vercel
+
+ENGINEERING.md
