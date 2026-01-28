@@ -21,20 +21,30 @@ import {
   Ticket,
   DollarSign,
   ChevronDown,
-  ChevronRight
+  ChevronRight,
+  Settings,
+  MoreVertical,
+  User
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const MENU_GROUPS = [
   {
-    label: "MARKETPLACE",
+    label: "LEARN",
     items: [
-      { name: "Discover", href: "/discover", icon: <Search className="size-4" /> },
+      { name: "Documentation", href: "/docs", icon: <FileText className="size-4" /> },
+      { name: "Courses", href: "/courses", icon: <GraduationCap className="size-4" /> },
+      { name: "Build & Grow", href: "/build-grow", icon: <Wand2 className="size-4" /> },
+      { name: "Contributors", href: "/contributors", icon: <UserCircle className="size-4" /> },
+      { name: "Forums", href: "/forums", icon: <Terminal className="size-4" /> },
+      { name: "Activity", href: "/activity", icon: <Globe className="size-4" /> },
+      { name: "Roadmap", href: "/roadmap", icon: <FileText className="size-4" /> },
     ],
   },
   {
     label: "BUILD",
     items: [
+      { name: "Discover", href: "/discover", icon: <Search className="size-4" /> },
       { name: "AI Models", href: "/models", icon: <Cpu className="size-4" /> },
       { name: "tGPUs", href: "/tgpu", icon: <Box className="size-4" /> },
       { name: "Agents", href: "/agents", icon: <Terminal className="size-4" /> },
@@ -47,26 +57,13 @@ const MENU_GROUPS = [
     ],
   },
   {
-    label: "LEARN",
-    items: [
-      { name: "Documentation", href: "/docs", icon: <FileText className="size-4" /> },
-      { name: "Courses", href: "/community/courses", icon: <GraduationCap className="size-4" /> },
-      { name: "Build & Grow", href: "/build-grow", icon: <Wand2 className="size-4" /> },
-      { name: "Contributors", href: "/contributors", icon: <UserCircle className="size-4" /> },
-      { name: "Forums", href: "/forums", icon: <Terminal className="size-4" /> },
-      { name: "Activity", href: "/activity", icon: <Globe className="size-4" /> },
-      { name: "Profile", href: "http://localhost:3002/community/profile", icon: <UserCircle className="size-4" />, external: true },
-    ],
-  },
-  {
-    label: "DASHBOARD",
+    label: "EARN",
     items: [
       { name: "Dashboard", href: "/dashboard", icon: <Layout className="size-4" /> },
       { name: "Ecosystem", href: "/ecosystem", icon: <Globe className="size-4" /> },
       { name: "Token", href: "/token", icon: <Coins className="size-4" /> },
       { name: "Claims", href: "/claims", icon: <Ticket className="size-4" /> },
       { name: "Earn", href: "/earn", icon: <DollarSign className="size-4" /> },
-      { name: "Roadmap", href: "/roadmap", icon: <FileText className="size-4" /> },
     ],
   },
 ]
@@ -74,6 +71,7 @@ const MENU_GROUPS = [
 export function V10Sidebar() {
   const pathname = usePathname()
   const [collapsedGroups, setCollapsedGroups] = React.useState<string[]>([])
+  const [isConnected, setIsConnected] = React.useState(false) // Mock state
 
   // Default to /models if at root
   const effectivePathname = pathname === "/" ? "/models" : pathname
@@ -91,22 +89,66 @@ export function V10Sidebar() {
       {/* V10 Portal Indicator Strip */}
       <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.8)]" />
       
-      {/* Logo Section matched to Dashboard */}
+      {/* Logo Section */}
       <div className="mb-6 mt-4 flex px-2 items-center gap-3">
-        <div className="size-8 rounded-lg bg-blue-600 flex items-center justify-center font-black text-white italic shadow-lg shadow-blue-500/20">V</div>
+        <div className="size-8 rounded-lg flex items-center justify-center shadow-lg overflow-hidden">
+          <img src="/icon.png" alt="V10 Logo" className="w-full h-full object-contain" />
+        </div>
         <div className="text-xl font-bold tracking-tighter text-white">
           V10 <span className="text-blue-400">PORTAL</span>
         </div>
       </div>
 
-      {/* Wallet Connect Card matched to Dashboard */}
+      {/* Wallet Connect Card */}
       <div className="relative mb-8 w-full rounded-lg bg-[#1F2021] p-4 border border-white/5">
+        {/* Profile Avatar & Settings Widget */}
+        <div className={cn(
+          "mb-4 flex items-center justify-between border-b border-white/5 pb-4 transition-all",
+          !isConnected && "opacity-40 grayscale pointer-events-none"
+        )}>
+          <div className="flex items-center gap-3">
+            <div className="size-10 rounded-full bg-gradient-to-br from-gray-600 to-gray-700 border-2 border-white/10 flex items-center justify-center text-xs font-bold text-white shadow-lg overflow-hidden">
+              {isConnected ? (
+                <img 
+                  src="https://api.dicebear.com/7.x/avataaars/svg?seed=v10-studio" 
+                  alt="Profile" 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <User className="size-5 text-white/40" />
+              )}
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[11px] font-bold text-white tracking-tight">
+                {isConnected ? "0x12...abcd" : "Unauthorized"}
+              </span>
+              <span className="text-[9px] font-medium text-blue-400 uppercase tracking-widest">
+                {isConnected ? "Pilot" : "Guest Access"}
+              </span>
+            </div>
+          </div>
+          <button
+            disabled={!isConnected}
+            className={cn(
+              "p-1.5 rounded-md transition-all",
+              isConnected
+                ? "hover:bg-white/5 text-white/40 hover:text-white cursor-pointer"
+                : "text-white/10 cursor-not-allowed"
+            )}
+          >
+            <Settings className="size-4" />
+          </button>
+        </div>
+
         <div className="flex items-end justify-between">
           <span className="text-[40px] font-light leading-none text-white">0</span>
           <span className="text-[12px] font-bold text-white/50 tracking-wider">OPENX</span>
         </div>
-        <button className="mt-4 w-full rounded-xl bg-blue-600 py-2.5 text-sm font-bold text-white transition-all hover:bg-blue-500 active:scale-95 shadow-lg shadow-blue-900/20">
-          Connect Wallet
+        <button 
+          onClick={() => setIsConnected(!isConnected)}
+          className="mt-4 w-full rounded-xl bg-blue-600 py-2.5 text-sm font-bold text-white transition-all hover:bg-blue-500 active:scale-95 shadow-lg shadow-blue-900/20"
+        >
+          {isConnected ? "Connected" : "Connect Wallet"}
         </button>
       </div>
 
@@ -131,14 +173,14 @@ export function V10Sidebar() {
               {!isCollapsed && (
                 <div className="space-y-1 animate-in fade-in slide-in-from-top-1 duration-200">
                   {group.items.map((item) => {
+                    if (item.name === "App Builder" && process.env.NODE_ENV === 'production') return null;
+
                     const isActive = effectivePathname === item.href
-                    const isExternal = item.href.startsWith('http')
                     
                     return (
                       <NextLink
                         key={item.name}
                         href={item.href}
-                        target={isExternal ? "_blank" : undefined}
                         className={cn(
                           "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200",
                           isActive 
