@@ -90,14 +90,14 @@ export function V10Sidebar() {
       <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.8)]" />
       
       {/* Logo Section */}
-      <div className="mb-6 mt-4 flex px-2 items-center gap-3">
+      <NextLink href="/" className="mb-6 mt-4 flex px-2 items-center gap-3 hover:opacity-80 transition-opacity">
         <div className="size-8 rounded-lg flex items-center justify-center shadow-lg overflow-hidden">
           <img src="/icon.png" alt="V10 Logo" className="w-full h-full object-contain" />
         </div>
         <div className="text-xl font-bold tracking-tighter text-white">
           V10 <span className="text-blue-400">PORTAL</span>
         </div>
-      </div>
+      </NextLink>
 
       {/* Wallet Connect Card */}
       <div className="relative mb-8 w-full rounded-lg bg-[#1F2021] p-4 border border-white/5">

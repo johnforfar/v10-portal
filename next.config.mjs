@@ -6,11 +6,7 @@ const nextConfig = {
   reactStrictMode: true,
   async redirects() {
     return [
-      {
-        source: '/',
-        destination: '/models',
-        permanent: false,
-      },
+      // Root redirect removed to allow welcome page at '/'
     ]
   },
   async rewrites() {
@@ -33,8 +29,13 @@ const nextConfig = {
 
     // Helper to add rewrites only if target is defined and valid
     const addRewrite = (source, targetPath) => {
-      if (targetPath && (targetPath.startsWith('http') || targetPath.startsWith('/'))) {
+      // If the target URL is valid (starts with http), proxy it
+      if (targetPath && targetPath.startsWith('http')) {
         rewrites.push({ source, destination: targetPath });
+      } else {
+        // FALLBACK: If env var is missing, direct user to the welcome root page
+        // The URL will stay as /docs or /community, but show the home page content
+        rewrites.push({ source, destination: '/' });
       }
     };
 
